@@ -23,18 +23,18 @@ public class Decryption : MonoBehaviour
     
     [Header("Code Display")]
     [Space(5)]
-    [SerializeField] Text displayGuess;//creates text object that will display the current guess
-    [SerializeField] Text masterCode;//creates text value that can be display in the UI
+    [SerializeField] Text displayGuess;// text object that will display the current guess
+    [SerializeField] Text masterCode;// text value that can be display in the UI
 
     [Header("Pad Display")]
     [Space(5)]
-    [SerializeField] TextMeshProUGUI displayTry;//creates text object that will display the current number of tries left
-    [SerializeField] Text errorMessage;//creates text object that will display error message if boundary is reached
-    [SerializeField] GameObject correctButton;
+    [SerializeField] TextMeshProUGUI displayTry;// text object that will display the current number of tries left
+    [SerializeField] Text errorMessage;// text object that will display error message if boundary is reached
+    [SerializeField] GameObject correctButton;// button that gives access to the win scene
     
     int guess;// creates the integer used for calculations of the guess
     int triesLeft = 13; // creates the integer used for counting remaining attempts (+1 since the first guess is included)
-    string realCode = Encryption.realCode;
+    string realCode = Encryption.realCode;// get the code that was entered with the 'Encryption' script
 
     public void OnPressHigher()//creates the method that will be linked to the "HIGHER" button
     {
@@ -71,10 +71,10 @@ public class Decryption : MonoBehaviour
     }
 
     void CreateMasterPwd()
-    {
-        int longCodeA = Random.Range(0, 1000000);
-        int longCodeB = Random.Range(0, 1000000);
-        masterCode.text = longCodeA.ToString("D6") + longCodeB.ToString("D6");//assign 'code' to the text object
+    {// can't obtain a 12-digit number through Random.Range so I split it into to.
+        int longCodeA = Random.Range(0, 1000000);//get a 6-digit number
+        int longCodeB = Random.Range(0, 1000000);//using leading zeros ("D#") to fill missing digits if it happens
+        masterCode.text = longCodeA.ToString("D6") + longCodeB.ToString("D6");//assign the two parts as one string to the text object
     }
 
     void NextGuess()
@@ -86,7 +86,7 @@ public class Decryption : MonoBehaviour
             displayTry.text = triesLeft.ToString();//converts integer to string, and use it as a text object
             guess = Random.Range(min, max);// picks a random number between min and max   //(min is inclusive, max is exclusive)
             displayGuess.text = guess.ToString("D3");//update the displayed guess and add leading zeros to keep it 3-digit
-            if (displayGuess.text.ToString() == realCode) { correctButton.SetActive(true); }
+            if (displayGuess.text.ToString() == realCode) { correctButton.SetActive(true); }// if the guess is correct, display the button that leads to the win scene
         }
     }
 }
